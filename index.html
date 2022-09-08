@@ -8,18 +8,36 @@
 <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
 <script crossorigin src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
 <script type="text/babel">
-    const root = document.querySelector("#root");
-    let counter = 0;
     function App () {
-        const data = React.useState(0);
-        const [counter, setCounter] = data;
-        const onClick = () => {
-            setCounter(counter + 1);
+        const [amount, setAmount] = React.useState(0);
+        const [flipped, setFlip] = React.useState(false);
+
+        const onChange = (event) => {
+            setAmount(event.target.value);
+        };
+
+        const onReset = () => {
+            setAmount(0);
+        };
+
+        const onFlip = () => {
+            onReset();
+            setFlip((current) => !current);
         }
+
         return (
             <div>
-                <h3>Total Clicks : {counter}</h3>
-                <button onClick = {onClick}>Click Me</button>
+                <h1>Super Converter</h1>
+                <div>
+                    <label for="minutes">Minutes</label>
+                    <input value={flipped ? amount * 60 : amount} id="minutes" placeholder="Minutes" type="number" onChange={onChange} disabled={flipped}/>
+                </div>
+                <div>
+                    <label for="hours">Hours</label>
+                    <input value={flipped ? amount : Math.round(amount / 60)} id="hours" placeholder="Hours" type="number" onChange={onChange} disabled={!flipped}/>
+                </div>
+                <button onClick={onReset}>reset</button>
+                <button onClick={onFlip}>flip</button>
             </div>
         );
     };
